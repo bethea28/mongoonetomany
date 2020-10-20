@@ -6,6 +6,7 @@
     "zip": "zip -r take_home.zip . -x \"node_modules/*\" \".git/*\" \".DS_Store\" \"public/bundle*\" \"*.log\""
   },
   "dependencies": {
+    "axios": "^0.20.0",
     "classnames": "2.2.6",
     "core-js": "3.6.5",
     "dotenv": "^8.2.0",

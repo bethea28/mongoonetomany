@@ -2,6 +2,12 @@ require('dotenv').config()
 
 var express = require('express')
 var mongoose = require('mongoose')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const webpackHotMiddleware = require('webpack-hot-middleware')
+const webpackConfig = require('./webpack.config.js')
+
+const webpack = require('webpack')
+const compiler = webpack(webpackConfig)
 
 // Require all models
 var db = require('./models')
@@ -28,6 +34,18 @@ app.use(express.static('public'))
 
 // Routes
 // Route to get all products
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath,
+  })
+)
+app.use(
+  webpackHotMiddleware(compiler, {
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000,
+  })
+)
+
 app.get('/products', function (req, res) {
   db.Product.find({})
     .then(function (dbProducts) {
@@ -104,8 +122,12 @@ app.get('/products/:id', function (req, res) {
 })
 // Home route. Currently just to make sure app is running returns hello message.
 
-app.get('/', function (req, res) {
-  res.send('Hello from demo app!')
+// app.get('/', function (req, res) {
+//   res.send('Hello from demo app!')
+// })
+
+app.get('/', (_, res) => {
+  res.sendFile(`${__dirname}/index.html`)
 })
 
 // Start the server
