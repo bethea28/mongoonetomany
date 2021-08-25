@@ -48,8 +48,8 @@ class App extends React.Component {
         {this.state.reviewInputs.map((a, index) => {
           return (
             <input
+            onChange={() => this.inputChange(event, index)}
               placeholder={placeHolder[index]}
-              onChange={() => this.inputChange(event, index)}
             />
           )
         })}
