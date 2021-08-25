@@ -84,6 +84,7 @@ app.post('/product', function (req, res) {
 // Route for creating a new Review and updating Product "review" field with it
 app.post('/product/:id', function (req, res) {
   // Create a new note and pass the req.body to the entry
+  console.log('test product req', req.params)
   db.Review.create(req.body)
     .then(function (dbReview) {
       // If a Review was created successfully, find one Product with an `_id` equal to `req.params.id`. Update the Product to be associated with the new Review
@@ -91,6 +92,7 @@ app.post('/product/:id', function (req, res) {
       // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
       return db.Product.findOneAndUpdate(
         { _id: req.params.id },
+        // The $push operator appends a specified value to an array.
         { $push: { reviews: dbReview._id } },
         { new: true }
       )
